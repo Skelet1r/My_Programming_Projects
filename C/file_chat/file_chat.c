@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <sys/select.h>
+#include <unistd.h>
 #include <string.h>
 
-enum { buffer_size = 1024, file_perms = 0644 };
+enum { buff_len = 1024, pipe_elements = 2, file_perms = 0644 };
 static const char* usage = "Usage: ./file_chat [FILE1] [FILE2]\n";
 
 static void check_error(const int fd)
@@ -19,13 +18,13 @@ static void check_error(const int fd)
 static void print_file_content(const char* file_name) 
 {
     size_t bytesRead;
-    char buffer[buffer_size];
+    char buffer[buff_len];
     int fd;
 
     fd = open(file_name, O_RDONLY);
     check_error(fd);
 
-    while ((bytesRead = read(fd, buffer, buffer_size)) > 0) {
+    while ((bytesRead = read(fd, buffer, buff_len)) > 0) {
         for (ssize_t i = 0; i < bytesRead; i++) {
             printf("%c", buffer[i]);
         }
@@ -33,15 +32,9 @@ static void print_file_content(const char* file_name)
     printf("\n");
 }
 
-static void write_file(const char* file_name)
+static void write_file(const char* file_name, const char* user_input)
 {
     int fd, write_res, is_EOF; 
-    char user_input[buffer_size];
-
-
-    is_EOF = scanf("%s", user_input);
-    if (is_EOF == EOF) 
-        exit(0);
 
     fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, file_perms); 
     check_error(fd);
@@ -63,28 +56,30 @@ int main(int argc, char** argv)
     }
     const char* finput = argv[1];
     const char* foutput = argv[2];
-    
-    while (1) {
-        int select_res, max_fd;
-        char c2;
-        fd_set foutputfd;
-     
-        print_file_content(finput);
-        
-        FD_ZERO(&foutputfd);
-        FD_SET(0, &foutputfd);
 
-        max_fd = 0;
-        select_res = select(max_fd + 1, &foutputfd, NULL, NULL, NULL);
-        if (select_res == -1) {
-            perror("select");
+    while (1) {
+        ssize_t recved_data_from_pipe;
+        int pipe_res;
+        int p[pipe_elements];
+        char user_input[buff_len]; 
+        char buff_for_data_from_pipe[buff_len];
+
+        pipe_res = pipe(p);
+        if (pipe_res == -1) {
+            perror("pipe");
             exit(1);
         }
+        
+        scanf("%s", user_input);
+        write(p[1], user_input, strlen(user_input));
+        close(p[1]);
 
-        if (select_res == 0) 
-            printf("Nothing happened\n");
-        else 
-            write_file(foutput);
+        recved_data_from_pipe = read(p[0], buff_for_data_from_pipe, sizeof(buff_for_data_from_pipe) - 1);
+        if (recved_data_from_pipe >= 0) {
+            buff_for_data_from_pipe[recved_data_from_pipe] = '\0';
+            write_file(finput, buff_for_data_from_pipe);
+        }
+        print_file_content(foutput);
+        close(p[0]);
     }
-    return 0;
 }
