@@ -6,8 +6,8 @@
 #include "includes/utils.h"
 #include "includes/word_item.h"
 #include "includes/exec_commands.h"
+#include "includes/commands.h"
 
-enum { buffer_len = 1024, standart_output = 1 };
 static const char* quotes_error_message = "ERROR: unmatched quotes\n";
 static const char* unknown_command = "Unknown command\n";
 
@@ -66,7 +66,19 @@ void parse_create_table(struct word_item** head)
     const char* key = curr->next->next->word;
     const char* value = curr->next->next->next->word;
     create_table(table_name, key, value);
+}            
+
+void parse_show_tables(struct word_item** head)
+{
+    struct word_item* curr;
+    curr = *head;
+    
+    if (0 == strcmp(curr->word, "SHOW") && 
+        0 == strcmp(curr->next->word, "TABLES")) {
+        show_tables();   
+    }  
 }
+
 
 void read_command(struct word_item** head, struct word_item** tail)
 {

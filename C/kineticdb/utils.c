@@ -22,3 +22,11 @@ void check_fd(const int fd, const char* action)
         exit(1);
     }
 }
+
+void check_pid(const int pid, const char* action) 
+{
+    if (pid == -1) {
+        perror(action);
+        exit(1);
+    }
+}
