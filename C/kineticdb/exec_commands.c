@@ -23,6 +23,7 @@ void exec_commands(struct word_item** head)
     switch (list_elements) {
         case 2:
             parse_show_tables(head);
+            break;
         case 5: 
             parse_create_table(head);
             break;
