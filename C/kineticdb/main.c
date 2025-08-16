@@ -11,8 +11,8 @@
 #include "includes/commands_parser.h"
 #include "includes/exec_commands.h"
 
-static const char* path_to_kineticdb = "kineticdb";
-static const char* error_message = "An error while checking directory\n";
+static const char* path_to_kineticdb = "/var/lib/kineticdb";
+/*static const char* error_message = "An error while checking directory\n";
 
 static int is_kineticdb_exists()
 {
@@ -25,11 +25,11 @@ static int is_kineticdb_exists()
         return 0;
     } 
     return -1;
-}
+}*/
 
 int main()
 {
-    int is_kineticdb_exists_res;
+  /*  int is_kineticdb_exists_res;
     is_kineticdb_exists_res = is_kineticdb_exists(); 
 
     if (is_kineticdb_exists_res == 0) {
@@ -39,8 +39,8 @@ int main()
         exit(1);
     }
     
+	*/
     chdir(path_to_kineticdb);
-
     while (1) {
         printf("> ");
 

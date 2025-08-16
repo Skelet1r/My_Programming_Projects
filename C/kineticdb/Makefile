@@ -1,25 +1,39 @@
-all: kineticdb_bin
+CC=gcc
+CFLAGS=-Wall -g -c
+INCLUDES=-Iincludes
+OBJ=commands.o commands_parser.o exec_commands.o main.o utils.o word_item.o
+USER=kineticdb
+SYS_PATH=/var/lib/kineticdb
+BIN_PATH=/usr/local/bin
 
-kineticdb_bin: commands.o commands_parser.o exec_commands.o main.o utils.o word_item.o
-	gcc -Wall -g commands.o commands_parser.o exec_commands.o main.o utils.o word_item.o -o kineticdb_bin
+all: kineticdb
+
+kineticdb: $(OBJ) 
+	$(CC) $(CFLAGS) $(OBJ) -o kineticdb
 
 commands.o: commands.c
-	gcc -Wall -g -Iincludes -c commands.c
+	$(CC) $(CFLAGS) $(INCLUDES) commands.c
 
 commands_parser.o: commands_parser.c
-	gcc -Wall -g -Iincludes -c commands_parser.c
+	$(CC) $(CFLAGS) $(INCLUDES) commands_parser.c
 
 exec_commands.o: exec_commands.c
-	gcc -Wall -g -Iincludes -c exec_commands.c
+	$(CC) $(CFLAGS) $(INCLUDES) exec_commands.c
 
 main.o: main.c
-	gcc -Wall -g -Iincludes -c main.c
+	$(CC) $(CFLAGS) $(INCLUDES) main.c
 
 utils.o: utils.c
-	gcc -Wall -g -Iincludes -c utils.c
+	$(CC) $(CFLAGS) $(INCLUDES) utils.c
 
 word_item.o: word_item.c
-	gcc -Wall -g -Iincludes -c word_item.c
+	$(CC) $(CFLAGS) $(INCLUDES) word_item.c
 
 clean:
-	rm -f *.o kineticdb_bin
+	rm -f *.o 
+
+install: 
+	sudo useradd -r -s /bin/false $(USER)
+	sudo mkdir -p $(SYS_PATH)
+	sudo chown $(USER):$(USER) $(SYS_PATH) 
+	sudo cp kineticdb $(BIN_PATH)
