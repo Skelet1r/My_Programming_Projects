@@ -9,7 +9,6 @@
 #include "includes/commands.h"
 
 static const char* quotes_error_message = "ERROR: unmatched quotes\n";
-static const char* unknown_command = "Unknown command\n";
 
 static char* parse_quotes(char type_of_quotes)
 {    
@@ -53,10 +52,8 @@ void parse_create_table(struct word_item** head)
     for (int i = 0; i < 2; i++) {
         if (0 == strcmp(curr->word, "CREATE") && i == 0) { 
             curr = curr->next;
-            i++;
         } else if (0 == strcmp(curr->word, "TABLE") && i == 1) {
             curr = curr->next;
-            i++;
         }  else {
             write(standart_output, unknown_command, strlen(unknown_command));
             return;
@@ -78,7 +75,6 @@ void parse_show_tables(struct word_item** head)
         show_tables();   
     }  
 }
-
 
 void read_command(struct word_item** head, struct word_item** tail)
 {

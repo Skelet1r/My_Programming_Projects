@@ -10,10 +10,13 @@
 #include "includes/exec_commands.h"
 #include "includes/word_item.h"
 #include "includes/utils.h"
+#include "includes/commands.h"
 
 static void help()
 {
-	printf("CREATE TABLE [TABLE_NAME] [KEY] [VALUE]");
+	printf("CREATE TABLE [TABLE_NAME] [KEY] [VALUE] - creates a new key-value table\n");
+	printf("SHOW TABLES - show tables in current database\n");
+	printf("[q] or [quit] or [exit] - exit\n");
 }
 
 void exec_commands(struct word_item** head)
@@ -21,11 +24,17 @@ void exec_commands(struct word_item** head)
     const int list_elements = count_list_elements(*head);
     
     switch (list_elements) {
+		case 1:
+			quit(head);			
+			break;
         case 2:
             parse_show_tables(head);
             break;
         case 5: 
             parse_create_table(head);
             break;
+		default:
+            write(standart_output, unknown_command, strlen(unknown_command));
+			break;
     }
 }

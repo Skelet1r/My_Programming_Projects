@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 
 #include "includes/commands.h"
+#include "includes/word_item.h"
 #include "includes/utils.h"
 
 void create_table(
@@ -40,3 +41,14 @@ void show_tables()
     }
     wait(NULL);
 }
+
+void quit(struct word_item** head)
+{
+	struct word_item* curr;
+	curr = *head;
+	if (0 == strcmp(curr->word, "q")    ||
+		0 == strcmp(curr->word, "quit") ||
+		0 == strcmp(curr->word, "exit")) 
+		exit(0);	
+}
+

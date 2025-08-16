@@ -9,7 +9,7 @@ BIN_PATH=/usr/local/bin
 all: kineticdb
 
 kineticdb: $(OBJ) 
-	$(CC) $(CFLAGS) $(OBJ) -o kineticdb
+	$(CC) $(OBJ) -o kineticdb
 
 commands.o: commands.c
 	$(CC) $(CFLAGS) $(INCLUDES) commands.c
@@ -32,8 +32,9 @@ word_item.o: word_item.c
 clean:
 	rm -f *.o 
 
-install: 
-	sudo useradd -r -s /bin/false $(USER)
+install: kineticdb
+	id -u $(USER) >/dev/null 2>&1 || sudo useradd -r -s /bin/false $(USER)
 	sudo mkdir -p $(SYS_PATH)
-	sudo chown $(USER):$(USER) $(SYS_PATH) 
-	sudo cp kineticdb $(BIN_PATH)
+	sudo chown $(USER):$(USER) $(SYS_PATH)
+	sudo cp kineticdb $(BIN_PATH)/
+	sudo chmod 755 /usr/local/bin/kineticdb
