@@ -38,7 +38,7 @@ void show_tables()
     int pid;
 
     pid = fork();
-    check_pid(pid, "fork");
+    check_res(pid, "fork");
 
     if (pid == 0) {
         execvp("ls", command);
@@ -46,6 +46,13 @@ void show_tables()
         exit(1);
     }
     wait(NULL);
+}
+
+void delete_table(const char* table_name)
+{
+	int unlink_res;
+	unlink_res = unlink(table_name);
+	check_res(unlink_res, "unlink");
 }
 
 void quit(struct word_item** head)

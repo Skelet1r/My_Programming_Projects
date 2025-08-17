@@ -76,6 +76,25 @@ void parse_show_tables(struct word_item** head)
     }  
 }
 
+void parse_delete_table(struct word_item** head)
+{
+	struct word_item* curr;
+	curr = *head;
+
+	for (int i = 0; i < 2; i++) {
+		if (0 == strcmp(curr->word, "DELETE") && i == 0) {
+			curr = curr->next;
+		} else if (0 == strcmp(curr->word, "TABLE") && i == 1) {
+			curr = curr->next;
+		} else {
+			write(standart_output, unknown_command, strlen(unknown_command));
+			return;
+		}
+	}
+	const char* table_name = curr->word;
+	delete_table(table_name);
+}
+
 void read_command(struct word_item** head, struct word_item** tail)
 {
     char* command;    
