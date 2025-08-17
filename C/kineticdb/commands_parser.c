@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
 #include "includes/utils.h"
 #include "includes/word_item.h"
 #include "includes/exec_commands.h"
@@ -49,16 +48,12 @@ void parse_create_table(struct word_item** head)
     struct word_item* curr;
     curr = *head;
 
-    for (int i = 0; i < 2; i++) {
-        if (0 == strcmp(curr->word, "CREATE") && i == 0) { 
-            curr = curr->next;
-        } else if (0 == strcmp(curr->word, "TABLE") && i == 1) {
-            curr = curr->next;
-        } else {
-            write(standart_output, unknown_command, strlen(unknown_command));
-            return;
-        }
-    }
+	if (0 == strcmp(curr->word, "CREATE") &&
+		0 == strcmp(curr->next->word, "TABLE")) 
+		curr = curr->next->next;
+	else 
+		write(standart_output, unknown_command, strlen(unknown_command));
+		return;
     const char* table_name = curr->word;
     const char* key = curr->next->word;
     const char* value = curr->next->next->word;
@@ -71,9 +66,10 @@ void parse_show_tables(struct word_item** head)
     curr = *head;
     
     if (0 == strcmp(curr->word, "SHOW") && 
-        0 == strcmp(curr->next->word, "TABLES")) {
-        show_tables();   
-    }  
+        0 == strcmp(curr->next->word, "TABLES")) 
+        show_tables();  
+	else 
+		write(standart_output, unknown_command, strlen(unknown_command));
 }
 
 void parse_delete_table(struct word_item** head)
@@ -81,18 +77,13 @@ void parse_delete_table(struct word_item** head)
 	struct word_item* curr;
 	curr = *head;
 
-	for (int i = 0; i < 2; i++) {
-		if (0 == strcmp(curr->word, "DELETE") && i == 0) {
-			curr = curr->next;
-		} else if (0 == strcmp(curr->word, "TABLE") && i == 1) {
-			curr = curr->next;
-		} else {
-			write(standart_output, unknown_command, strlen(unknown_command));
-			return;
-		}
+	if (0 == strcmp(curr->word, "DELETE") && 
+		0 == strcmp(curr->next->word, "TABLE")) {
+		const char* table_name = curr->next->next->word;
+		delete_table(table_name);
+	} else {
+		write(standart_output, unknown_command, strlen(unknown_command));
 	}
-	const char* table_name = curr->word;
-	delete_table(table_name);
 }
 
 void read_command(struct word_item** head, struct word_item** tail)

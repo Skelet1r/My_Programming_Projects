@@ -63,5 +63,7 @@ void quit(struct word_item** head)
 		0 == strcmp(curr->word, "quit") ||
 		0 == strcmp(curr->word, "exit")) 
 		exit(0);	
+	else 
+        write(standart_output, unknown_command, strlen(unknown_command));
 }
 
