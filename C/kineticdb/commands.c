@@ -9,6 +9,8 @@
 #include "includes/word_item.h"
 #include "includes/utils.h"
 
+static const char* separator = ":";
+
 void create_table(
     const char* table_name, 
     const char* key, 
@@ -16,14 +18,18 @@ void create_table(
 ) {   
     int fd, write_res;
 
-    fd = open(table_name, O_CREAT | O_WRONLY, file_perms);
+    fd = open(table_name, O_CREAT | O_WRONLY | O_APPEND, file_perms);
     check_fd(fd, "open");
 
     write_res = write(fd, key, strlen(key));
-    check_fd(fd, "write");
-    
-    write_res = write(fd, value, strlen(value));
-    check_fd(fd, "write");
+    check_fd(write_res, "write");
+	
+	write_res = write(fd, separator, strlen(separator)); 
+    check_fd(write_res, "write");
+
+	write_res = write(fd, value, strlen(value));
+    check_fd(write_res, "write");
+	close(fd);
 }
 
 void show_tables()

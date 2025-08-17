@@ -54,16 +54,16 @@ void parse_create_table(struct word_item** head)
             curr = curr->next;
         } else if (0 == strcmp(curr->word, "TABLE") && i == 1) {
             curr = curr->next;
-        }  else {
+        } else {
             write(standart_output, unknown_command, strlen(unknown_command));
             return;
         }
     }
-    const char* table_name = curr->next->word;
-    const char* key = curr->next->next->word;
-    const char* value = curr->next->next->next->word;
+    const char* table_name = curr->word;
+    const char* key = curr->next->word;
+    const char* value = curr->next->next->word;
     create_table(table_name, key, value);
-}            
+} 
 
 void parse_show_tables(struct word_item** head)
 {

@@ -11,6 +11,7 @@ struct word_item* add_word(struct word_item** head, struct word_item** tail, cha
     node_word = malloc(sizeof(struct word_item));
     if (!node_word) {
         perror("ERROR: An error while mallocing memory.\n");
+		return NULL;
     }
     node_word->word = strdup(command);
     node_word->next = NULL;

@@ -1,10 +1,17 @@
+
+
+
+
+
+
+
 CC=gcc
 CFLAGS=-Wall -g -c
 INCLUDES=-Iincludes
 OBJ=commands.o commands_parser.o exec_commands.o main.o utils.o word_item.o
-USER=kineticdb
-SYS_PATH=/var/lib/kineticdb
-BIN_PATH=/usr/local/bin
+SYS_PATH=/usr/local
+BIN_DIR=$(SYS_PATH)/bin
+DATA_DIR=/var/lib/kineticdb
 
 all: kineticdb
 
@@ -30,11 +37,9 @@ word_item.o: word_item.c
 	$(CC) $(CFLAGS) $(INCLUDES) word_item.c
 
 clean:
-	rm -f *.o 
+	rm -f *.o
 
 install: kineticdb
-	id -u $(USER) >/dev/null 2>&1 || sudo useradd -r -s /bin/false $(USER)
-	sudo mkdir -p $(SYS_PATH)
-	sudo chown $(USER):$(USER) $(SYS_PATH)
-	sudo cp kineticdb $(BIN_PATH)/
-	sudo chmod 755 /usr/local/bin/kineticdb
+	install -d $(BIN_DIR)
+	install kineticdb $(BIN_DIR)/kineticdb
+	install -d $(DATA_DIR)
