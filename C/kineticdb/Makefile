@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 CC=gcc
 CFLAGS=-Wall -g -c
 INCLUDES=-Iincludes
@@ -42,4 +35,4 @@ clean:
 install: kineticdb
 	install -d $(BIN_DIR)
 	install kineticdb $(BIN_DIR)/kineticdb
-	install -d $(DATA_DIR)
+	touch $(DATA_DIR)

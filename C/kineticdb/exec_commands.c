@@ -14,7 +14,7 @@
 
 static void help()
 {
-	printf("CREATE TABLE [TABLE_NAME] [KEY] [VALUE] - creates a new key-value table\n");
+	printf("PUT [KEY] [VALUE] - creates a new key-value pare\n");
 	printf("SHOW TABLES - show tables in current database\n");
 	printf("DELETE TABLE [TABLE_NAME]\n");
 	printf("[q] or [quit] or [exit] - exit\n");
@@ -28,15 +28,15 @@ void exec_commands(struct word_item** head)
 		case 1:
 			quit(head);			
 			break;
-        case 2:
-            parse_show_tables(head);
-            break;
+//        case 2:
+ //           parse_show_tables(head);
+  //          break;
 		case 3: 
-			parse_delete_table(head);
+            parse_put(head);
+//			parse_delete_table(head);
 			break;
-        case 5: 
-            parse_create_table(head);
-            break;
+        //case 5: 
+         //   break;
 		default:
             write(standart_output, unknown_command, strlen(unknown_command));
 			break;

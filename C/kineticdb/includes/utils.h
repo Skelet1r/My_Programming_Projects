@@ -6,6 +6,7 @@ enum {
 };
 
 static const char* unknown_command = "Unknown command\n";
+static const char* table_name = "kineticdb";
 
 void check_alloc(const void* word);
 void check_fd(const int fd, const char* action);

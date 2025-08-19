@@ -11,7 +11,7 @@
 #include "includes/commands_parser.h"
 #include "includes/exec_commands.h"
 
-static const char* path_to_kineticdb = "/var/lib/kineticdb";
+static const char* path_to_kineticdb = "/var/lib/";
 
 int main()
 {

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "includes/utils.h"
 #include "includes/word_item.h"
 #include "includes/exec_commands.h"
@@ -43,21 +44,20 @@ reset_word(char** command, int* i, struct word_item** head, struct word_item** t
     *i = 0;
 }
 
-void parse_create_table(struct word_item** head)
+void parse_put(struct word_item** head)
 {
     struct word_item* curr;
     curr = *head;
 
-	if (0 == strcmp(curr->word, "CREATE") &&
-		0 == strcmp(curr->next->word, "TABLE")) 
-		curr = curr->next->next;
-	else 
+	if (0 == strcmp(curr->word, "PUT")) {
+		curr = curr->next;
+	} else {
 		write(standart_output, unknown_command, strlen(unknown_command));
 		return;
-    const char* table_name = curr->word;
-    const char* key = curr->next->word;
-    const char* value = curr->next->next->word;
-    create_table(table_name, key, value);
+	}
+    const char* key = curr->word;
+    const char* value = curr->next->word;
+    put(key, value);
 } 
 
 void parse_show_tables(struct word_item** head)

@@ -10,9 +10,9 @@
 #include "includes/utils.h"
 
 static const char* separator = ":";
+static const char* new_line = "\n";
 
-void create_table(
-    const char* table_name, 
+void put(
     const char* key, 
     const char* value
 ) {   
@@ -29,6 +29,9 @@ void create_table(
 
 	write_res = write(fd, value, strlen(value));
     check_fd(write_res, "write");
+
+	write_res = write(fd, new_line, strlen(new_line));
+	check_fd(write_res, "write");
 	close(fd);
 }
 
