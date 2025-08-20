@@ -5,7 +5,9 @@
 
 void read_command(struct word_item** head, struct word_item** tail);
 void parse_put(struct word_item** head);
+void parse_get(struct word_item** head);
 void parse_show_tables(struct word_item** head);
 void parse_delete_table(struct word_item** head);
+void parse_one_word(struct word_item** head);
 
 #endif

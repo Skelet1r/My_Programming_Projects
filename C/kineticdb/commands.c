@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
@@ -12,10 +12,16 @@
 static const char* separator = ":";
 static const char* new_line = "\n";
 
-void put(
-    const char* key, 
-    const char* value
-) {   
+void print_help()
+{
+	printf("PUT [KEY] [VALUE] - creates a new key-value pare\n");
+	printf("GET [KEY] - show tables in current database\n");
+	printf("DELETE TABLE [TABLE_NAME]\n");
+	printf("[q] or [quit] or [exit] - exit\n");
+}
+
+void put(const char* key, const char* value) 
+{   
     int fd, write_res;
 
     fd = open(table_name, O_CREAT | O_WRONLY | O_APPEND, file_perms);
@@ -35,20 +41,22 @@ void put(
 	close(fd);
 }
 
-void show_tables()
+void get(const char* key)
 {
-    char* command[] = { "ls", NULL };
-    int pid;
+	char* buff;
+	int fd;
+	ssize_t bytes_read;
 
-    pid = fork();
-    check_res(pid, "fork");
+	fd = open(table_name, O_RDONLY);
+	check_fd(fd, "open");
 
-    if (pid == 0) {
-        execvp("ls", command);
-        perror("ls");
-        exit(1);
-    }
-    wait(NULL);
+	buff = malloc(sizeof(char) * buff_len - 1);
+	check_alloc(buff);
+	
+	bytes_read = read(fd, buff, buff_len - 1);
+	while (bytes_read != EOF) {
+
+	}
 }
 
 void delete_table(const char* table_name)
@@ -62,11 +70,9 @@ void quit(struct word_item** head)
 {
 	struct word_item* curr;
 	curr = *head;
+
 	if (0 == strcmp(curr->word, "q")    ||
 		0 == strcmp(curr->word, "quit") ||
 		0 == strcmp(curr->word, "exit")) 
 		exit(0);	
-	else 
-        write(standart_output, unknown_command, strlen(unknown_command));
 }
-

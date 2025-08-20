@@ -4,6 +4,9 @@
 
 #include "includes/utils.h"
 
+const char* unknown_command = "Unknown command\n";
+const char* table_name = "kineticdb";
+
 static const char* error_message = "ERROR: allocation error\n";
 
 void check_alloc(const void* word) 

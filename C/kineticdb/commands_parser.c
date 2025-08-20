@@ -60,16 +60,19 @@ void parse_put(struct word_item** head)
     put(key, value);
 } 
 
-void parse_show_tables(struct word_item** head)
+void parse_get(struct word_item** head)
 {
     struct word_item* curr;
     curr = *head;
     
-    if (0 == strcmp(curr->word, "SHOW") && 
-        0 == strcmp(curr->next->word, "TABLES")) 
-        show_tables();  
-	else 
+    if (0 == strcmp(curr->word, "GET")) {
+		curr = curr->next;
+	} else {
 		write(standart_output, unknown_command, strlen(unknown_command));
+		return;
+	}
+	const char* key = curr->word;
+	get(key);
 }
 
 void parse_delete_table(struct word_item** head)
@@ -84,6 +87,21 @@ void parse_delete_table(struct word_item** head)
 	} else {
 		write(standart_output, unknown_command, strlen(unknown_command));
 	}
+}
+
+void parse_one_word(struct word_item** head)
+{
+	struct word_item* curr;
+	curr = *head;
+
+	if (0 == strcmp(curr->word, "q")    ||
+		0 == strcmp(curr->word, "quit") ||
+		0 == strcmp(curr->word, "exit")) 
+		exit(0);	
+	else if (0 == strcmp(curr->word, "help"))
+		print_help();
+	else 
+		write(standart_output, unknown_command, strlen(unknown_command));
 }
 
 void read_command(struct word_item** head, struct word_item** tail)

@@ -12,13 +12,13 @@
 #include "includes/utils.h"
 #include "includes/commands.h"
 
-static void help()
+/*static void help()
 {
 	printf("PUT [KEY] [VALUE] - creates a new key-value pare\n");
 	printf("SHOW TABLES - show tables in current database\n");
 	printf("DELETE TABLE [TABLE_NAME]\n");
 	printf("[q] or [quit] or [exit] - exit\n");
-}
+}*/
 
 void exec_commands(struct word_item** head)
 {
@@ -26,11 +26,11 @@ void exec_commands(struct word_item** head)
     
     switch (list_elements) {
 		case 1:
-			quit(head);			
+			parse_one_word(head);
 			break;
-//        case 2:
- //           parse_show_tables(head);
-  //          break;
+        case 2:
+			parse_get(head);
+            break;
 		case 3: 
             parse_put(head);
 //			parse_delete_table(head);
