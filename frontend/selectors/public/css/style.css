@@ -1,0 +1,15 @@
+.main.border-div {
+    background-color: blue;
+    border-style: dotted;
+}
+.main {
+    background-color: aqua;
+}
+
+.border-div {
+    border-style: solid !important;
+}
+
+.main>p {
+    font-size: 35px;
+}

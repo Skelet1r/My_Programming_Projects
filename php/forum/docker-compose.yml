@@ -1,13 +1,16 @@
 version: '3.8'    #check if there is a new docker compose version
 services:
   web:
-    image: php:8.4-apache    #check the php version you need for your project
+    build: .    #check the php version you need for your project
     ports:
       - "80:80"    #this line maps your pc port to the container port
     depends_on:
       - db    #this line links this container to the db container
     volumes:
-      - ./public:/var/www/html    #this line maps the content of ./html in your pc to the /var/www/html of the container
+      - ./public:/var/www/html
+      - ./config:/var/www/config
+      - ./src:/var/www/src
+      - ./Views:/var/www/Views
   db:
     image: mysql:8.1.0    #check the mysql version you need for your project
     environment:
